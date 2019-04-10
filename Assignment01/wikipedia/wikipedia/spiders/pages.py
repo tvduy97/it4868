@@ -14,9 +14,9 @@ class PagesSpider(scrapy.Spider):
     nodes = set()
     
     custom_settings = {
-        'DEPTH_LIMIT': 1,
-        # 'DEPTH_PRIORITY': 1 #breadth-first
-        'DEPTH_PRIORITY': 0 #depth-first
+        'DEPTH_LIMIT': 2,
+        'DEPTH_PRIORITY': 1 #breadth-first
+        # 'DEPTH_PRIORITY': 0 #depth-first
     }
 
     rules = (
@@ -27,6 +27,7 @@ class PagesSpider(scrapy.Spider):
 	                            "https://vi\.wikipedia\.org/wiki/Thảo_luận.*",
 	                            "https://vi\.wikipedia\.org/wiki/Chủ_đề.*",
 	                            "https://vi\.wikipedia\.org/wiki/Đặc_biệt.*"
+	                            "https://vi\.wikipedia\.org/wiki/Bản_mẫu.*"
 	                        ]),
 	            callback='parse'),
 	)
@@ -43,7 +44,7 @@ class PagesSpider(scrapy.Spider):
 
 	    links = []
 	    for link in allLinks:
-	    	if link['href'].startswith('/wiki/') and not link['href'].startswith('/wiki/Wikipedia'):
+	    	if link['href'].startswith('/wiki/') and ":" not in link['href']:
 	    		links.append(link['title'])
 	    cnt = Counter(links)
 	    item['links'] = cnt
